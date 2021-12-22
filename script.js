@@ -50,12 +50,35 @@ const openModal = (_id, _content) => {
 
 }
 
+const memoryCard = (_memory) => {
+
+    let aprove = "";
+    if(localStorage.getItem('memories-type') == 'm' && !_memory.aprove){
+        aprove = `<button onclick="aproveMemory('${_memory._id}')" class="btn btn-danger">אישור מנהל</button>`;
+    }
+
+    let html = `
+    <div class="card bg-dark text-white m-3">
+        <img src="${_memory.gallery[0]}" class="card-img" alt="...">
+        <div class="card-img-overlay">
+            <h5 class="card-title">${_memory.title}</h5>
+            <p class="card-text">${_memory.date}</p>
+            <button onclick="openMemory('${_memory._id}')" class="btn btn-lg btn-dark">צפה בזיכרון</button>
+            ${aprove}
+        </div>
+    </div>
+    `;
+   
+    return html;
+
+}
+
 const getMemories = async() => {
 
-    let url = "http://localhost:3006/api/memories/";
+    let url = "https://memories-rnr.herokuapp.com/api/memories/";
     let sending = {};
     if(localStorage.getItem('memories-type') == 'm'){
-        url = "http://localhost:3006/api/memories/maneger";
+        url = "https://memories-rnr.herokuapp.com/api/memories/maneger";
         
         sending.headers = {
             autorisation: localStorage.getItem('memories-token')
@@ -67,17 +90,14 @@ const getMemories = async() => {
     let data = await fetch(url, sending);
     let json = await data.json();
     
-    let html = "<ul>";
+    let html = '<div class="row">';
     for(let x in json) {
-        
-        html += '<li>';
-        html += `<span onclick="openMemory('${json[x]._id}')">${json[x].title}</span>`;
-        if(localStorage.getItem('memories-type') == 'm' && !json[x].aprove){
-            html += `<button onclick="aproveMemory('${json[x]._id}')">aprove</button>`;
-        }
-        html += '</li>';
+        html += '<div class="col-6">';
+        html += memoryCard(json[x]);
+        html += '</div>';
     }
-    html += "</ul>";
+    html += "</div>";
+    
 
     $("#memoriesID").empty();
     $("#memoriesID").append(html);
@@ -88,27 +108,44 @@ const openMemory = async(_id) => {
 
     console.log(_id);
 
-    let data = await fetch("http://localhost:3006/api/memories/"+_id);
+    let data = await fetch("https://memories-rnr.herokuapp.com/api/memories/"+_id);
     let json = await data.json();
 
     let modal = `
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">${json.title}</h5>
+                    <h2 class="modal-title" id="exampleModalLabel">${json.title}
+                    <br><span style="font-size:50%;">${json.date}</span></h2>
+                   
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-                    ${json.memory}
+
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="${json.gallery[0]}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                
+                                <p class="card-text">${json.memory}</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
+                   
+
                 <div class="modal-footer">
-                    ${json.date}
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">יציאה</button>
                 </div>
 
             </div>
@@ -129,7 +166,7 @@ const aproveMemory = async(_id) => {
 
     console.log(_id);
 
-    let data = await fetch(`http://localhost:3006/api/memories/aprove/${_id}`, {
+    let data = await fetch(`https://memories-rnr.herokuapp.com/api/memories/aprove/${_id}`, {
         headers:{
             autorisation: localStorage.getItem('memories-token')
         }
@@ -155,7 +192,7 @@ const login = async(_id) => {
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">התחברות/הרשמה</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -168,7 +205,7 @@ const login = async(_id) => {
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Login
+                                    התחברות
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -176,14 +213,14 @@ const login = async(_id) => {
 
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com">
-                                        <label for="loginEmail">Email address</label>
+                                        <label for="loginEmail">כתובת מייל</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="loginPassword" placeholder="Password">
-                                        <label for="loginPassword">Password</label>
+                                        <label for="loginPassword">סיסמא</label>
                                     </div>
 
-                                    <button type="submit" onclick="checkLogin()" class="btn btn-primary mb-3">Login</button>
+                                    <button type="submit" onclick="checkLogin()" class="btn btn-primary mb-3">התחברות</button>
                                 
                                 </div>
                             </div>
@@ -192,30 +229,27 @@ const login = async(_id) => {
                         <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Singup
+                                הרשמה
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
 
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                    <label for="floatingInput">Email address</label>
+                                    <input type="email" class="form-control" id="registerEmailID" placeholder="name@example.com">
+                                    <label for="registerEmailID">כתובת מייל</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                                    <label for="floatingPassword">Password</label>
+                                    <input type="password" class="form-control" id="registerPasswordID" placeholder="Password">
+                                    <label for="registerPasswordID">סיסמא</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="Full Name">
-                                    <label for="floatingInput">Full Name</label>
+                                    <input type="text" class="form-control" id="registerFullnameID" placeholder="Full Name">
+                                    <label for="registerFullnameID">שם מלא</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="floatingPassword" placeholder="Phone">
-                                    <label for="floatingPassword">Phone</label>
-                                </div>
+                        
 
-                                <button type="submit" class="btn btn-primary mb-3">singup</button>
+                                <button type="submit" onclick="register()" class="btn btn-primary mb-3">הרשמה</button>
                             
                             </div>
                         </div>
@@ -226,7 +260,7 @@ const login = async(_id) => {
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ביטול</button>
                 </div>
 
             </div>
@@ -243,12 +277,45 @@ const login = async(_id) => {
 
 }
 
+const register = async() => {
+
+    _email = document.getElementById('registerEmailID').value;
+    _password = document.getElementById('registerPasswordID').value;
+    _fullName= document.getElementById('registerFullnameID').value;
+
+    let data = await fetch("https://memories-rnr.herokuapp.com/api/user/", {
+        method: 'POST', 
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },      
+        body: JSON.stringify({email: _email, password: _password, full_name: _fullName})
+    });
+
+    try {
+        let json = await data.json();
+        if(json._id){
+            document.getElementById('loginEmail').value = json.email;
+            document.getElementById('loginPassword').value = _password;
+            checkLogin();
+            return;
+        }       
+    } catch (error) {
+        console.log(error);
+    }
+
+    $("#loginErr").empty().append("שם משתמש או סיסמא לא תקינים נסה שנית");
+    $("#registerEmailID").addClass("is-invalid");
+    $("#registerPasswordID").addClass("is-invalid");
+
+}
+
 const checkLogin = async() => {
 
     _email = document.getElementById('loginEmail').value;
     _password = document.getElementById('loginPassword').value;
     
-    let data = await fetch("http://localhost:3006/login/", {
+    let data = await fetch("https://memories-rnr.herokuapp.com/login/", {
         method: 'POST', 
         headers: {
             'Accept': 'application/json',
@@ -324,6 +391,11 @@ const addMemoryModal = () => {
                         <label for="addMemoryMemoryID">זיכרון</label>
                     </div>
 
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="addMemoryPictureID">
+                        <label for="addMemoryPictureID">תמונה</label>
+                    </div>
+
                     <button class="btn btn-primary" onclick="addMemory()">הוסף סיפור </button>
 
                 </div>
@@ -357,15 +429,16 @@ const addMemory = async() => {
         title = document.getElementById('addMemoryTitleID').value;
         date = document.getElementById('addMemoryDateID').value;
         memory = document.getElementById('addMemoryMemoryID').value;
-        
+        picture = document.getElementById('addMemoryPictureID').value;
     
-        let data = await fetch("http://localhost:3006/api/memories", {
+        let data = await fetch("https://memories-rnr.herokuapp.com/api/memories", {
             method: 'POST', 
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'autorisation': localStorage.getItem('memories-token')
             },      
-            body: JSON.stringify({userID: userId, title: title, date: date , memory: memory})
+            body: JSON.stringify({userID: userId, title: title, date: date , memory: memory, gallery: [picture]})
         });
 
         try {

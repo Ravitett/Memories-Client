@@ -19,20 +19,23 @@
 
     <div id="modalID"></div>
 
-    <header class="container-fluid bg-dark text-white">
+    <header class="container-fluid bg-dark text-white p-2 mb-2">
 
       <div class="container">
-        <div class="row">
+        <div class="row d-flex justify-content-between align-content-center">
 
-          <div class="col">
-            <h1>Memories</h1>
+          <div class="col d-flex align-items-center justify-content-start">
+            <p id="welcome"></p>
+          </div>
+
+          <div class="col text-center">
+            <h1>זכרונות</h1>
             <p>שתף את הסיפור שלך</p>
           </div>
 
           <div class="col d-flex align-items-center justify-content-end">
-            <button class="btn btn-outline-light btn-lg" id="loginBtn" onclick="login()">login</button>
-            <p class="fs-3" id="welcome"></p>
-            <button class="btn btn-outline-light btn-lg" id="logoutBtn" onclick="logout()">Logout</button>
+            <button class="btn btn-outline-light" id="loginBtn" onclick="login()">התחברות/הרשמה</button>
+            <button class="btn btn-outline-light" id="logoutBtn" onclick="logout()">יציאה</button>
           </div>
 
         </div>      
@@ -43,8 +46,11 @@
 
       <div id="msgID"></div>
 
-      <button class="btn btn-primary btn-lg" id="addMemoryBtn" onclick="addMemoryModal()">add</button><br>
+      <div class="d-grid gap-2 col-6 mx-auto m-5">
+        <button class="btn btn-outline-dark btn-lg" id="addMemoryBtn" onclick="addMemoryModal()">הוסף זיכרון</button>
+      </div>
 
+      
       <div></div>
 
       <div id="memoriesID"></div>
@@ -54,8 +60,8 @@
 
     </main>
 
-    <footer class="container-fluid text-center bg-dark text-white">
-      <h2>Footer</h2>
+    <footer class="container-fluid text-center bg-dark text-white p-3 mt-5">
+      <p>Ravit&Rotem &copy; 2021</p>
     </footer>
 
  
