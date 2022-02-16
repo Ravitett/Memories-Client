@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,html{
+    font-family: 'Varela Round', sans-serif;
+    height: 100%;
+}
+
+main{
+    min-height: 100%;
+}
+
+footer{
+    position: absolute;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.MuiTableCell-root{
+    text-align: right !important;
+}
