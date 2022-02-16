@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import { getAllMemoryForApprove } from '../Api/memories'
 
 const Admin = () => {
-
+  let navigate = useNavigate();
   const [data, setData] = useState([]);
 
   useEffect(async () => {
@@ -36,7 +37,7 @@ const Admin = () => {
           {data.map((row) => (
             <TableRow
               key={row._id}
-              onClick={()=>{alert(1)}}
+              onClick={()=>{navigate(`/admin/${row._id}`)}}
               hover={true}
               style={{ cursor: "pointer"}}
             >
