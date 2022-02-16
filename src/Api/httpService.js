@@ -2,7 +2,10 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 
 const BASE_URL = 'http://localhost:3006/';
-const TOKEN = localStorage.getItem("memories-token") || '';
+let TOKEN = localStorage.getItem("memories-token") || '';
+setInterval(()=>{
+    TOKEN = localStorage.getItem("memories-token") || '';
+},500)
 
 export const httpService = {
     get(endpoint, data) {
@@ -30,12 +33,17 @@ async function ajax(endpoint, method = 'get', data = null) {
         })
         return res.data
     } catch (err) {
-        console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${data}`)
+        console.log(err);
         if (err.response && err.response.status === 401) {
-            toast.error("אין הרשאה לפעולה זו")
+            //toast.error("אין הרשאה לפעולה זו")
+            return false;
+        }else if (err.response && err.response.status === 403) {
+            //toast.error("אין הרשאה לפעולה זו")
+            return false;
         }else{
+            console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${data}`)
             toast.error("שגיאת מערכת, נא לפנות למנהל המערכת.")
         }
-        throw err
     }
 }
+

@@ -1,16 +1,25 @@
 import { httpService } from "./httpService";
 
-import axios from "axios";
-
 const middelPoint = "api/memories/";
-const USERID = localStorage.getItem("memories-userID") || '';
 
 const getAllMemories = async() => {
     return httpService.get(`${middelPoint}`);
 }
 
+const getMemory = async(_id) => {
+    return httpService.get(`${middelPoint}memory/${_id}`);
+}
+
+const getChet = async(_id) => {
+    return httpService.get(`${middelPoint}chat/${_id}`);
+}
+
 const getAllMemoryForUser = async() => {
-    return httpService.get(`${middelPoint}user/${USERID}`);
+    return httpService.get(`${middelPoint}user/`);
+}
+
+const getMemoryForUser = async(_id) => {
+    return httpService.get(`${middelPoint}user/${_id}`);
 }
 
 const getAllMemoryForApprove = async() => {
@@ -32,12 +41,30 @@ const getBadWords = async() => {
     return httpService.get(`${middelPoint}badwords/`)
 }
 
+const addMemory = async(_body) => {
+    return httpService.post(`${middelPoint}`,_body)
+}
+
+const updateMemory = async(_id,_body) => {
+    return httpService.put(`${middelPoint}/${_id}`,_body)
+}
+
+const deleteMemory = async(_id) => {
+    return httpService.delete(`${middelPoint}/${_id}`)
+}
+
 export {
     getAllMemories,
+    getMemory,
+    getChet,
     getAllMemoryForUser,
+    getMemoryForUser,
     getAllMemoryForApprove,
     getMemoryForApprove,
     changeStatus,
     getBadWords,
-    chatSendMsg
+    chatSendMsg,
+    addMemory,
+    updateMemory,
+    deleteMemory
 }
