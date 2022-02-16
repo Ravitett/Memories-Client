@@ -8,18 +8,6 @@
 
 body,html{
     font-family: 'Varela Round', sans-serif;
-    height: 100%;
-}
-
-main{
-    min-height: 100%;
-}
-
-footer{
-    position: absolute;
-    width: 100%;
-    right: 0;
-    bottom: 0;
 }
 
 .MuiTableCell-root{
