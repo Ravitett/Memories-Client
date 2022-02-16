@@ -7,4 +7,5 @@ const loginLocalStorage = (_obj) => {
 const logOut = () => {
     localStorage.clear();
 }
+
 export { loginLocalStorage, logOut }
