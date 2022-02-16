@@ -11,14 +11,14 @@ import Paper from '@mui/material/Paper';
 
 import SendIcon from '@mui/icons-material/Send';
 
-import { chatSendMsg, getMemoryForApprove } from '../Api/memories'
+import { chatSendMsg, getChet } from '../Api/memories'
 
 const Chat = ({ memoryID, userType }) => {
 
     const [message, setMessage] = useState('')
     const [chatState, setChatState] = useState([])
     useEffect(async () => {
-        let dataFromApi = await getMemoryForApprove(memoryID);
+        let dataFromApi = await getChet(memoryID);
         setChatState(dataFromApi.chat);
     }, [])
     const updateChatState = (_from, _message) => {
@@ -27,11 +27,11 @@ const Chat = ({ memoryID, userType }) => {
         setMessage('');
     }
     return (
-        <Card sx={{ height: 450 }} style={{ position: "relative" }}>
-            <CardContent style={{height:"80%" ,overflow: "scroll"}}>
+        <Card sx={{ height: "70vh" }} style={{ position: "relative" }}>
+            <CardContent style={{height:"85%" ,overflowY: "scroll"}}>
                 {chatState.map(msg => <Message msg={msg} />)}
             </CardContent>
-            <CardActions style={{ position: "absolute", bottom: 0 }}>
+            <CardActions>
                 <IconButton onClick={async () => {
                     let res = await chatSendMsg(memoryID, userType, message);
                     console.log(res);
@@ -39,7 +39,7 @@ const Chat = ({ memoryID, userType }) => {
                 }}>
                     <SendIcon />
                 </IconButton>
-                <TextField onChange={(e) => { setMessage(e.target.value) }} value={message} id="filled-basic" label="הודעה" variant="filled" />
+                <TextField fullWidth onChange={(e) => { setMessage(e.target.value) }} value={message} label="הודעה" variant="filled" />
             </CardActions>
         </Card>
     )
@@ -80,28 +80,3 @@ const Message = ({ msg }) => {
         );
     }
 }
-
-/*
-<div className="card">
-            <div className="card-header text-center">
-                צ'אט
-            </div>
-            <div style={{height:"250px"}} className="card-body overflow-auto">
-                {chatState.map(msg => <p><strong>From {msg.from}: </strong>{msg.message}</p>)}
-            </div>
-            <div className="card-footer text-muted">
-                <div className="row">
-                    <div className="col-2 d-flex justify-content-center align-items-center">
-                        <i id="send-icon" onClick={async() => {
-                            let res = await   chatSendMsg(memoryID, userType, message);
-                            res.status == 'success' ? updateChatState(userType, message) : setMessage('') ;
-                        }} class="fas fa-paper-plane"></i>
-                    </div>
-                    <div className="col-10 d-flex justify-content-center align-items-center">
-                        <input type="text" onChange={(e) => {setMessage(e.target.value)}} value={message} className="form-control" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-*/

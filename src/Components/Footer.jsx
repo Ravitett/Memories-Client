@@ -1,7 +1,6 @@
 import React from 'react'
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 const Footer = () => {
   return (
@@ -9,14 +8,13 @@ const Footer = () => {
       <Box
         sx={{
           width: '100%',
-          py:3,
-          mt: 1,
+          height: "5vh",
           textAlign: 'center',
           backgroundColor: 'primary.main',
           color:"white"
         }}
       >
-        <p>Ravit&Rotem &copy; 2021</p>
+        <Typography>Ravit&Rotem &copy; 2021</Typography>
       </Box>
     </footer>
   )
