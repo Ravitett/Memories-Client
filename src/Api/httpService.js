@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
-const BASE_URL = 'http://localhost:3006/';
+const BASE_URL = 'https://memories-rnr.herokuapp.com/';
 let TOKEN = localStorage.getItem("memories-token") || '';
 setInterval(()=>{
     TOKEN = localStorage.getItem("memories-token") || '';
