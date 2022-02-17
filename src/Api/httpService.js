@@ -35,10 +35,8 @@ async function ajax(endpoint, method = 'get', data = null) {
     } catch (err) {
         console.log(err);
         if (err.response && err.response.status === 401) {
-            //toast.error("אין הרשאה לפעולה זו")
             return false;
         }else if (err.response && err.response.status === 403) {
-            //toast.error("אין הרשאה לפעולה זו")
             return false;
         }else{
             console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${data}`)
